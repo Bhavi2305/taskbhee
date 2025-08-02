@@ -1,0 +1,183 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const TaskTallyApp());
+}
+
+class TaskTallyApp extends StatelessWidget {
+  const TaskTallyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'TaskTally',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        fontFamily: 'Segoe UI',
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      home: const DashboardPage(),
+    );
+  }
+}
+
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF3F4F6),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.deepPurple,
+        onPressed: () {},
+        icon: const Icon(Icons.add),
+        label: const Text("New Task"),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const Header(),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: const [
+                  SectionTitle(title: "Today"),
+                  TaskCard(
+                    title: "Finish UI for TaskTally",
+                    time: "9:00 AM",
+                    isDone: false,
+                  ),
+                  TaskCard(
+                    title: "Send Resume to HR",
+                    time: "11:30 AM",
+                    isDone: true,
+                  ),
+                  SectionTitle(title: "Completed"),
+                  TaskCard(
+                    title: "Update Flutter SDK",
+                    time: "7:00 AM",
+                    isDone: true,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.deepPurple, Colors.purpleAccent],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Hello, Bhavadharani 👋",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  )),
+              SizedBox(height: 4),
+              Text("Let’s get things done today!",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  )),
+            ],
+          ),
+          CircleAvatar(
+            backgroundImage: AssetImage("assets/avatar.png"), // Replace with real image
+            radius: 24,
+            backgroundColor: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  final String title;
+  const SectionTitle({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+class TaskCard extends StatelessWidget {
+  final String title;
+  final String time;
+  final bool isDone;
+
+  const TaskCard({
+    super.key,
+    required this.title,
+    required this.time,
+    required this.isDone,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        leading: Icon(
+          isDone ? Icons.check_circle : Icons.radio_button_unchecked,
+          color: isDone ? Colors.green : Colors.grey,
+          size: 28,
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            decoration: isDone ? TextDecoration.lineThrough : null,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        subtitle: Text(
+          time,
+          style: const TextStyle(color: Colors.grey),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios,
+          size: 16,
+          color: Colors.grey.shade400,
+        ),
+      ),
+    );
+  }
+}
